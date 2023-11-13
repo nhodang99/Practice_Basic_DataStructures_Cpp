@@ -1,3 +1,15 @@
+// @Singly linked list
+//
+// @Pros: - Dynamic arrangement: Grow and shrink at run time -> Effiecient for large data
+//        - No memory wastage: no need a pre-allocation
+//        - Fast delete, fast insert: No need to shift element after that
+//        - Scalability: add or remove elements at any position
+// @Cons: - More memory uasge require since a pointer to next element is needed
+//        - Reverse traversing is not possible (must be Doubly linked list)
+//        - Random access (indexed base) is not possible
+//        - Slow searching
+// @Uses: - quick sort, ???
+
 #include <iostream>
 
 template <typename T>
@@ -17,7 +29,8 @@ template <typename T>
 class LinkedList
 {
   Node<T> *m_pHead{nullptr};
-  Node<T> *m_pTail{nullptr};
+  Node<T> *m_pTail{nullptr}; // For quickly add element to the list
+                             // But need to handle carefully
   int m_size{0};
 
 public:

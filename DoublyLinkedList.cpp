@@ -1,3 +1,14 @@
+// @Doubly linked list
+//
+// @Pros: - Dynamic arrangement: Grow and shrink at run time -> Effiecient for large data
+//        - No memory wastage: no need a pre-allocation
+//        - Fast delete, fast insert: No need to shift element after that
+//        - Scalability: add or remove elements at any position
+//        - Easy reversing
+// @Cons: - More memory uasge require since a pointer to next element is needed
+//        - Random access (indexed base) is not possible
+//        - Slow searching
+// @Uses: - Navigation systems (maps, browser), MRU/LRU cache,...
 #include <iostream>
 
 template <typename T>
@@ -86,13 +97,13 @@ public:
     }
     else
     {
-      // Find the node before the to-be-inserted index
-      auto curNode = findNode(idx - 1);
+      // Retrieve the current node at the requested position
+      auto nodeAtIdx = findNode(idx);
 
-      curNode->m_pNext->m_pPrev = newNode;
-      newNode->m_pNext = curNode->m_pNext;
-      curNode->m_pNext = newNode;
-      newNode->m_pPrev = curNode;
+      nodeAtIdx->m_pPrev->m_pNext = newNode;
+      newNode->m_pPrev = nodeAtIdx->m_pPrev;
+      nodeAtIdx->m_pPrev = newNode;
+      newNode->m_pNext = nodeAtIdx;
     }
     m_size++;
     return true;
@@ -109,8 +120,8 @@ public:
       return false;
     }
 
-    auto curNode = findNode(idx);
-    curNode->m_value = value;
+    auto node = findNode(idx);
+    node->m_value = value;
     return true;
   }
 
@@ -139,11 +150,9 @@ public:
     }
     else
     {
-      // Find the node before the to-be-removed node
-      auto curNode = findNode(idx - 1);
-      nodeToRemove = curNode->m_pNext;
-      curNode->m_pNext->m_pNext->m_pPrev = curNode;
-      curNode->m_pNext = curNode->m_pNext->m_pNext;
+      nodeToRemove = findNode(idx);
+      nodeToRemove->m_pPrev->m_pNext = nodeToRemove->m_pNext;
+      nodeToRemove->m_pNext->m_pPrev = nodeToRemove->m_pPrev;
     }
 
     delete nodeToRemove;
@@ -207,6 +216,11 @@ public:
     while (curNode != nullptr)
     {
       std::cout << curNode->m_value << " <-> ";
+      if (curNode->m_pNext != nullptr && curNode->m_pNext->m_pPrev != curNode)
+      {
+        std::cout << "nodeLinkError!!! ";
+        break;
+      }
       curNode = curNode->m_pNext;
     }
     std::cout << "null" << std::endl;
@@ -242,6 +256,7 @@ int main()
   strList.toString();
 
   strList.add("f");
+  strList.add("h");
   strList.remove(2);
   strList.toString();
 }

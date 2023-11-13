@@ -1,1 +1,1 @@
-To practice some data structures with C++
+To play with some data structures in C++
